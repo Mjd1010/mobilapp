@@ -16,7 +16,6 @@ jobs:
         with:
           python-version: '3.10'
 
-      # إضافة جافا (مهم جداً لبناء الأندرويد)
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
@@ -29,8 +28,8 @@ jobs:
 
       - name: Build Android APK
         run: |
-          # إضافة --verbose عشان لو فشل يعطينا السبب الدقيق
-          flet build apk --verbose
+          # إضافة --yes تجعل السيرفر يوافق تلقائياً على تحميل Flutter SDK
+          flet build apk --yes
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
