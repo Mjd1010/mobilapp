@@ -9,12 +9,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4 # تم التحديث لـ v4
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v5 # تم التحديث لـ v5
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
+
+      # إضافة جافا (مهم جداً لبناء الأندرويد)
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
       - name: Install Flet CLI
         run: |
@@ -22,10 +29,11 @@ jobs:
 
       - name: Build Android APK
         run: |
-          flet build apk
+          # إضافة --verbose عشان لو فشل يعطينا السبب الدقيق
+          flet build apk --verbose
 
       - name: Upload APK Artifact
-        uses: actions/upload-artifact@v4 # هذا هو التعديل الأهم (v4)
+        uses: actions/upload-artifact@v4
         with:
           name: my-call-security-app
           path: build/apk/*.apk
