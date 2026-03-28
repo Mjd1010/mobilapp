@@ -1,0 +1,32 @@
+name: Build Flet Android App
+on:
+  push:
+    branches:
+      - main  # سيتم البناء تلقائياً كلما عدلت الكود في فرع main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - size_hint: 1
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Flet CLI
+        run: |
+          pip install flet
+
+      - name: Build Android APK
+        run: |
+          # هذا الأمر يقوم بتحويل الكود إلى APK
+          flet build apk
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: my-call-security-app
+          path: build/apk/*.apk
