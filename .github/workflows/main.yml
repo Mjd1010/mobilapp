@@ -12,23 +12,22 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install Flutter
+      - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.0' # إصدار مستقر ومجرب مع Flet
+          flutter-version: '3.19.0'
           channel: 'stable'
 
       - name: Install Flet
+        run: pip install flet
+
+      - name: Flet Build APK
         run: |
-          pip install flet
-          
-      - name: Build APK
-        run: |
-          # هذا الأمر يقوم بكل السحر وتجاوز مشاكل البيئة
-          flet build apk --no-version-check
+          # هنا نضيف صلاحيات سجل المكالمات مباشرة أثناء البناء
+          flet build apk --android-permissions "android.permission.READ_CALL_LOG,android.permission.READ_PHONE_STATE"
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: flet-app-release
+          name: FraudShield-APK
           path: build/apk/*.apk
